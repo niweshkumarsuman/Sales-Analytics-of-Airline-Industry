@@ -1,0 +1,33 @@
+Dax Formula
+To create  master calender
+
+Master Calender = ADDCOLUMNS(CALENDAR(DATE(1995,1,1),DATE(2015,12,31)),"Cal.Date",FORMAT([Date],"MM/DD/YYYY"),
+"DateAsInteger",FORMAT([Date],"YYYYMMDD"),"Monthnumber",FORMAT([Date],"MM"),"YearMonthNumber",FORMAT([Date],"YYYY/MM"),
+"MonthNameLong",FORMAT([Date],"mmmm"),"DayOfWeekNumber",WEEKDAY([Date]),"DayOfWeek",
+FORMAT([Date],"dddd"),"Quater","Q"&FORMAT([Date],"Q"),"YearQuater",FORMAT([Date],"YYYY" &"/Q" & FORMAT([Date],"Q")))
+
+Domestic Average = AVERAGE('AirCargoRevenue'[Domestic]) // to create domestic Average
+CALCULATE('AirCargoRevenue'[Domestic Revenue MTD],DATEADD('AirCargoRevenue'[Date],-1,MONTH))// to create Domestic LMTD
+Domestic Revenue LYTD = CALCULATE([Domestic Revenue YTD],DATEADD('Master Calender'[Date],-1,YEAR) )//to ceate Domestic Revenue LYTD
+Domestic Revenue MTD = TOTALMTD([Total Domestic Revenue],DATESMTD('AirCargoRevenue'[Date]))// to create Domestic Revenue MTD
+Domestic Revenue Variance = 'AirCargoRevenue'[Domestic Revenue MTD]-'AirCargoRevenue'[Domestic Revenue LMTD]// to calculate  Domestic
+                                                                                                            // Revenue Variance
+Domestic Revenue YTD = TOTALYTD('AirCargoRevenue'[Total Domestic Revenue],DATESYTD('Master Calender'[Date])) // to Domestic Revenue YTD
+Domestic Variance% = Divide([Domestic Revenue Variance],'AirCargoRevenue'[Domestic Revenue LMTD],0) //to Domestic Variance%
+International Revenue Average = AVERAGE('AirCargoRevenue'[International***])// to calculate International Revenue Average
+International Revenue LMTD = CALCULATE(AirCargoRevenue[International Revenue MTD],DATEADD('Master Calender'[Date],-1,MONTH)) // to cal
+                                                                                                                                Int Rev
+International Revenue LYTD = CALCULATE([International Revenue YTD],DATEADD('Master Calender'[Date],-1,YEAR)) //to International Reve LYTD
+International Revenue MTD = TOTALMTD([Total International Revenue],DATESMTD('Master Calender'[Date]))// to calcu Inter Revenue MTD
+International Revenue Variance = 'AirCargoRevenue'[International Revenue LMTD]-AirCargoRevenue[International Revenue MTD]// to calcu
+                                                                                                        // International Revenue Variance
+International Revenue Variance % = Divide([International Revenue Variance],'AirCargoRevenue'[International Revenue LMTD],0) // to calcu
+                                                                                                        // International Revenue Variance
+International Revenue YTD = TOTALYTD('AirCargoRevenue'[Total International Revenue],DATESYTD('Master Calender'[Date]))// to calculate
+                                                                                                        //International Revenue YTD
+Total Domestic Revenue = SUM('AirCargoRevenue'[Domestic])// to calculate Total Domestic Revenue
+Total International Revenue = SUM('AirCargoRevenue'[International***])//to calculate Total International Revenue
+Fare LQT = CALCULATE([Fare QTD],DATEADD('Consumer Airfare All US APM'[Dates],-1,QUARTER))// to calculate Fare LQT
+Fare LYTD = CALCULATE([Fare YTD],DATEADD('Consumer Airfare All US APM'[Dates],-1,YEAR))// to calculate Fare LYTD
+Fare QTD = TOTALQTD('Consumer Airfare All US APM'[Total Fare],DATESYTD('Consumer Airfare All US APM'[Dates])) // to calculate Fare QTD
+Fare YTD = TOTALYTD('Consumer Airfare All US APM'[Total Fare],DATESYTD('Consumer Airfare All US APM'[Dates]))// to calculate fare YTD
